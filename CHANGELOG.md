@@ -12,6 +12,7 @@ Here we write the updates of future releases.
 ### Added
 - Initialised the package files
 - Example folder to test the output of the UI packages
+- Text widgets
 
 ### Changed
 
@@ -26,6 +27,11 @@ Here we write the updates of future releases.
 
 
 
+
+## [1.0.1] - 18-01-2026
+
+### Added
+- New Text widgets
 
 ## [1.0.0] - 18-01-2026
 
