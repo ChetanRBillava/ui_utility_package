@@ -27,6 +27,13 @@ Here we write the updates of future releases.
 
 
 
+## [1.0.2] - 08-02-2026
+
+### Added
+- Card widgets
+
+### Changed
+- Restructured the home page
 
 ## [1.0.1] - 18-01-2026
 

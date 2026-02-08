@@ -57,4 +57,22 @@ class UiUtilityPackage {
       color: textColorsMap[color],
     );
   }
+
+  Widget customCard({
+    required Widget widget,
+    Color? color,
+    Color? shadowColor,
+    Color? surfaceTintColor,
+    double? elevation,
+  }) {
+    return Card(
+      color: color,
+      shadowColor: shadowColor,
+      surfaceTintColor: surfaceTintColor,
+      margin: const EdgeInsets.all(12),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: elevation ?? 4,
+      child: Padding(padding: const EdgeInsets.all(16), child: widget),
+    );
+  }
 }
