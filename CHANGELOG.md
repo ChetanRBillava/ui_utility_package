@@ -27,6 +27,13 @@ Here we write the updates of future releases.
 
 
 
+## [1.0.3] - 12-02-2026
+
+### Added
+- Custom Text field
+- Examples for different combinations of text field
+
+
 ## [1.0.2] - 08-02-2026
 
 ### Added
@@ -35,10 +42,12 @@ Here we write the updates of future releases.
 ### Changed
 - Restructured the home page
 
+
 ## [1.0.1] - 18-01-2026
 
 ### Added
 - New Text widgets
+
 
 ## [1.0.0] - 18-01-2026
 
