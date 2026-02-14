@@ -27,6 +27,19 @@ Here we write the updates of future releases.
 
 
 
+## [1.0.4] - 14-02-2026
+
+### Added
+- Custom Button
+- Custom Radio
+- Custom Checkbox
+- Custom Chips
+- Custom Dropdown
+
+### Changed
+- Custom text widget by adding text align parameter
+
+
 ## [1.0.3] - 12-02-2026
 
 ### Added

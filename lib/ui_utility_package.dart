@@ -28,6 +28,7 @@ class UiUtilityPackage {
 
   ///Map of all text field controllers
   static final Map<String, TextEditingController> textFormFieldControllers = {};
+  static final Map<String, dynamic> radioGroupValues = {};
   static TextEditingController getTextFormFieldController(String key) {
     return textFormFieldControllers.putIfAbsent(
       key,
@@ -41,9 +42,11 @@ class UiUtilityPackage {
     FontWeight? fontWeight,
     Color? color,
     FontStyle? fontStyle,
+    TextAlign? textAlign,
   }) {
     return Text(
       text,
+      textAlign: textAlign,
       style: TextStyle(
         fontSize: fontSize,
         fontWeight: fontWeight,
@@ -59,9 +62,11 @@ class UiUtilityPackage {
     FontWeight? fontWeight,
     TextColors? color,
     FontStyle? fontStyle,
+    TextAlign? textAlign,
   }) {
     return basicText(
       text: text,
+      textAlign: textAlign,
       fontWeight: fontWeight,
       fontStyle: fontStyle,
       fontSize: fontSizeMap[fontSize],
@@ -189,6 +194,141 @@ class UiUtilityPackage {
       onTapOutside: (event) {
         FocusScope.of(context).unfocus();
       },
+    );
+  }
+
+  Widget customButton({
+    required Function()? onTap,
+    String? buttonText,
+    double? width,
+    ButtonType type = ButtonType.text,
+    IconData? icon,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Ink(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.white),
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
+        width: width,
+        padding: const EdgeInsets.all(8.0),
+        child:
+            type == ButtonType.icon
+                ? Icon(icon)
+                : [ButtonType.iconText, ButtonType.textIcon].contains(type)
+                ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    type == ButtonType.iconText
+                        ? Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Icon(icon),
+                        )
+                        : SizedBox.shrink(),
+                    customText(
+                      text: buttonText ?? '',
+                      fontSize: TextSize.subTitle,
+                      color: TextColors.primary,
+                      textAlign: TextAlign.center,
+                    ),
+                    type == ButtonType.textIcon
+                        ? Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Icon(icon),
+                        )
+                        : SizedBox.shrink(),
+                  ],
+                )
+                : customText(
+                  text: buttonText ?? '',
+                  fontSize: TextSize.subTitle,
+                  color: TextColors.primary,
+                  textAlign: TextAlign.center,
+                ),
+      ),
+    );
+  }
+
+  Widget customRadioButton({
+    required String radioText,
+    required dynamic value,
+    required dynamic groupValue,
+    required dynamic Function(dynamic)? onChanged,
+    Color? activeColor,
+    TextColors? textColor,
+  }) {
+    return Row(
+      children: [
+        Radio(
+          value: value,
+          groupValue: groupValue,
+          onChanged: onChanged,
+          activeColor: activeColor,
+        ),
+        customText(
+          text: radioText,
+          fontSize: TextSize.subTitle,
+          color: textColor,
+        ),
+      ],
+    );
+  }
+
+  Widget customCheckBox({
+    required bool isSelected,
+    required Function(bool?)? onChanged,
+    required String checkboxText,
+    TextColors? textColor,
+  }) {
+    return Row(
+      children: [
+        Checkbox(value: isSelected, onChanged: onChanged),
+        customText(
+          text: checkboxText,
+          fontSize: TextSize.subTitle,
+          color: textColor,
+        ),
+      ],
+    );
+  }
+
+  Widget customChip({
+    required String label,
+    required bool chipSelected,
+    required Function(bool)? onSelected,
+    Color? selectedColor,
+    Color? backgroundColor,
+    Color? checkmarkColor,
+  }) {
+    return ChoiceChip(
+      label: customText(text: label, fontSize: TextSize.subTitle),
+      selected: chipSelected,
+      onSelected: onSelected,
+      selectedColor: selectedColor,
+      backgroundColor: backgroundColor,
+      checkmarkColor: checkmarkColor,
+    );
+  }
+
+  Widget customDropdown({
+    required dynamic value,
+    required List<DropdownMenuItem<dynamic>>? items,
+    required Function(dynamic?)? onChanged,
+    Color? backgroundColor,
+    bool isExpanded = true,
+  }) {
+    return Container(
+      color: backgroundColor ?? Colors.white,
+      child: DropdownButton(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        value: value,
+        isExpanded: isExpanded,
+        items: items,
+        onChanged: onChanged,
+      ),
     );
   }
 }

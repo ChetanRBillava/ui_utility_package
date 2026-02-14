@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:ui_utility_package/enums.dart';
 import 'package:ui_utility_package/ui_utility_package.dart';
 
+import 'other_form_fields_page.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -103,6 +105,34 @@ class _HomePageState extends State<HomePage> {
                   uiUtilityPackage.customText(
                     text:
                         'Double tap to go to a page where examples related to different variations of the custom form field widget can be found.',
+                    fontSize: TextSize.subTitle,
+                    color: TextColors.secondary,
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          ///Other Form Field widgets
+          GestureDetector(
+            onDoubleTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => OtherFormFieldsPage()),
+              );
+            },
+            child: uiUtilityPackage.customCard(
+              color: Color(0xff616060),
+              widget: Column(
+                children: [
+                  uiUtilityPackage.customText(
+                    text: 'Other Form Fields',
+                    fontSize: TextSize.title,
+                    color: TextColors.secondary,
+                  ),
+                  uiUtilityPackage.customText(
+                    text:
+                        'Double tap to go to a page where examples related to different form fields like button, radio, checkbox and many more...',
                     fontSize: TextSize.subTitle,
                     color: TextColors.secondary,
                   ),
