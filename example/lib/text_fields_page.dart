@@ -12,17 +12,19 @@ class FormFieldsPage extends StatefulWidget {
 
 class _FormFieldsPageState extends State<FormFieldsPage> {
   UiUtilityPackage uiUtilityPackage = UiUtilityPackage();
+  static final Map<String, TextEditingController> textFormFieldControllers = {};
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool obscure = true;
+  static TextEditingController getTextFormFieldController(String key) {
+    return textFormFieldControllers.putIfAbsent(
+      key,
+      () => TextEditingController(),
+    );
+  }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    UiUtilityPackage.textFormFieldControllers.forEach((key, value) {
-      value.clear();
-    });
+  String getTextFieldValue({required String key}) {
+    return getTextFormFieldController(key).text;
   }
 
   @override
@@ -60,7 +62,9 @@ class _FormFieldsPageState extends State<FormFieldsPage> {
                     ),
                     SizedBox(height: 24),
                     uiUtilityPackage.customTextField(
-                      key: 'basic_text_field',
+                      controller: getTextFormFieldController(
+                        'basic_text_field',
+                      ),
                       context: context,
                     ),
                   ],
@@ -90,7 +94,9 @@ class _FormFieldsPageState extends State<FormFieldsPage> {
                     ),
                     SizedBox(height: 24),
                     uiUtilityPackage.customTextField(
-                      key: 'auto_focus_text_field',
+                      controller: getTextFormFieldController(
+                        'auto_focus_text_field',
+                      ),
                       context: context,
                       autofocus: true,
                     ),
@@ -121,11 +127,9 @@ class _FormFieldsPageState extends State<FormFieldsPage> {
                     ),
                     SizedBox(height: 24),
                     uiUtilityPackage.customTextField(
-                      key: 'disabled_text_field',
                       context: context,
                       enabled: false,
                       initialValue: 'This text field is disabled',
-                      controller: null,
                     ),
                   ],
                 ),
@@ -153,7 +157,9 @@ class _FormFieldsPageState extends State<FormFieldsPage> {
                     ),
                     SizedBox(height: 24),
                     uiUtilityPackage.customTextField(
-                      key: 'label_hint_text_field',
+                      controller: getTextFormFieldController(
+                        'label_hint_text_field',
+                      ),
                       context: context,
                       labelText: 'This is a label',
                       hintText: 'This is a hint text',
@@ -185,7 +191,9 @@ class _FormFieldsPageState extends State<FormFieldsPage> {
                     ),
                     SizedBox(height: 24),
                     uiUtilityPackage.customTextField(
-                      key: 'fixed_label_text_field',
+                      controller: getTextFormFieldController(
+                        'fixed_label_text_field',
+                      ),
                       context: context,
                       labelText: 'This is a fixed label',
                       floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -226,7 +234,9 @@ class _FormFieldsPageState extends State<FormFieldsPage> {
                           color: TextColors.secondary,
                         ),
                         uiUtilityPackage.customTextField(
-                          key: 'custom_label_text_field',
+                          controller: getTextFormFieldController(
+                            'custom_label_text_field',
+                          ),
                           context: context,
                           hintText: 'Type something...',
                         ),
@@ -259,7 +269,9 @@ class _FormFieldsPageState extends State<FormFieldsPage> {
                     ),
                     SizedBox(height: 24),
                     uiUtilityPackage.customTextField(
-                      key: 'obscure_text_field',
+                      controller: getTextFormFieldController(
+                        'obscure_text_field',
+                      ),
                       context: context,
                       hintText: 'Enter something...',
                       obscureText: true,
@@ -291,7 +303,9 @@ class _FormFieldsPageState extends State<FormFieldsPage> {
                     ),
                     SizedBox(height: 24),
                     uiUtilityPackage.customTextField(
-                      key: 'custom_obscure_text_field',
+                      controller: getTextFormFieldController(
+                        'custom_obscure_text_field',
+                      ),
                       context: context,
                       hintText: 'Enter something...',
                       obscureText: true,
@@ -324,7 +338,9 @@ class _FormFieldsPageState extends State<FormFieldsPage> {
                     ),
                     SizedBox(height: 24),
                     uiUtilityPackage.customTextField(
-                      key: 'text_field_with_icons',
+                      controller: getTextFormFieldController(
+                        'text_field_with_icons',
+                      ),
                       context: context,
                       hintText: 'Type something...',
                       icon: Icon(Icons.search),
@@ -358,7 +374,9 @@ class _FormFieldsPageState extends State<FormFieldsPage> {
                     ),
                     SizedBox(height: 24),
                     uiUtilityPackage.customTextField(
-                      key: 'functioning_icons',
+                      controller: getTextFormFieldController(
+                        'functioning_icons',
+                      ),
                       context: context,
                       hintText: 'Type something...',
                       obscureText: obscure,
@@ -375,8 +393,7 @@ class _FormFieldsPageState extends State<FormFieldsPage> {
                       prefixIconColor: Color(obscure ? 0xff263bde : 0xffe6c109),
                       suffixIcon: GestureDetector(
                         onTap: () {
-                          UiUtilityPackage
-                              .textFormFieldControllers['functioning_icons']
+                          textFormFieldControllers['functioning_icons']
                               ?.clear();
                         },
                         child: Icon(Icons.close),
@@ -413,7 +430,9 @@ class _FormFieldsPageState extends State<FormFieldsPage> {
                     Form(
                       key: formKey,
                       child: uiUtilityPackage.customTextField(
-                        key: 'phone_number_field',
+                        controller: getTextFormFieldController(
+                          'phone_number_field',
+                        ),
                         context: context,
                         hintText: 'Type something...',
                         textInputAction: TextInputAction.done,
@@ -442,8 +461,7 @@ class _FormFieldsPageState extends State<FormFieldsPage> {
                         prefixIcon: Icon(Icons.phone),
                         suffixIcon: GestureDetector(
                           onTap: () {
-                            UiUtilityPackage
-                                .textFormFieldControllers['phone_number_field']
+                            textFormFieldControllers['phone_number_field']
                                 ?.clear();
                           },
                           child: Icon(Icons.close),
@@ -479,7 +497,9 @@ class _FormFieldsPageState extends State<FormFieldsPage> {
                     ),
                     SizedBox(height: 24),
                     uiUtilityPackage.customTextField(
-                      key: 'long_input_text_field',
+                      controller: getTextFormFieldController(
+                        'long_input_text_field',
+                      ),
                       context: context,
                       hintText: 'Type something...',
                       minLines: 1,
@@ -487,8 +507,7 @@ class _FormFieldsPageState extends State<FormFieldsPage> {
                       maxLength: 500,
                       suffixIcon: GestureDetector(
                         onTap: () {
-                          UiUtilityPackage
-                              .textFormFieldControllers['long_input_text_field']
+                          textFormFieldControllers['long_input_text_field']
                               ?.clear();
                         },
                         child: Icon(Icons.close),

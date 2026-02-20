@@ -27,6 +27,18 @@ Here we write the updates of future releases.
 
 
 
+## [1.0.5] - 20-02-2026
+
+### Added
+- Custom Dialog
+- Custom Snackbar
+- Custom Bottom Sheet
+
+### Changed
+- Moved controller logic of text field outside of the plugin/package file and moved to example files.
+- Updated Custom button to have button color and border color as an optional parameter.
+
+
 ## [1.0.4] - 14-02-2026
 
 ### Added

@@ -26,16 +26,6 @@ class UiUtilityPackage {
     TextColors.warning: Color(0xffffc107),
   };
 
-  ///Map of all text field controllers
-  static final Map<String, TextEditingController> textFormFieldControllers = {};
-  static final Map<String, dynamic> radioGroupValues = {};
-  static TextEditingController getTextFormFieldController(String key) {
-    return textFormFieldControllers.putIfAbsent(
-      key,
-      () => TextEditingController(),
-    );
-  }
-
   Widget basicText({
     required String text,
     double? fontSize,
@@ -92,12 +82,7 @@ class UiUtilityPackage {
     );
   }
 
-  String getTextFieldValue({required String key}) {
-    return getTextFormFieldController(key).text;
-  }
-
   Widget customTextField({
-    required String key,
     required BuildContext context,
     TextEditingController? controller,
     Function(String)? onChanged,
@@ -132,10 +117,7 @@ class UiUtilityPackage {
     int? maxLength,
   }) {
     return TextFormField(
-      controller:
-          initialValue != null
-              ? null
-              : controller ?? getTextFormFieldController(key),
+      controller: initialValue != null ? null : controller,
       onChanged: onChanged,
       validator: validator,
       decoration: InputDecoration(
@@ -203,13 +185,15 @@ class UiUtilityPackage {
     double? width,
     ButtonType type = ButtonType.text,
     IconData? icon,
+    Color? buttonColor,
+    Color? borderColor,
   }) {
     return InkWell(
       onTap: onTap,
       child: Ink(
         decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: Colors.white),
+          color: buttonColor,
+          border: Border.all(color: borderColor ?? Colors.transparent),
           borderRadius: BorderRadius.all(Radius.circular(12)),
         ),
         width: width,
@@ -330,5 +314,122 @@ class UiUtilityPackage {
         onChanged: onChanged,
       ),
     );
+  }
+
+  void showCustomDialog({
+    required BuildContext context,
+    required String title,
+    required Widget content,
+    required List<Widget> actions,
+    TextColors? titleTextColor,
+    Widget? icon,
+    Color? iconColor,
+    Color? backgroundColor,
+    double? elevation,
+    Color? shadowColor,
+    Color? surfaceTintColor,
+    bool scrollable = false,
+    ShapeBorder? shape,
+  }) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          scrollable: scrollable,
+          backgroundColor: backgroundColor,
+          elevation: elevation,
+          shadowColor: shadowColor,
+          surfaceTintColor: surfaceTintColor,
+          icon: icon,
+          iconColor: iconColor,
+          title: customText(
+            text: title,
+            fontSize: TextSize.title,
+            fontWeight: FontWeight.w700,
+            color: titleTextColor,
+          ),
+          content: content,
+          actions: actions,
+          shape: shape,
+        );
+      },
+    );
+  }
+
+  void showCustomSnackBar({
+    required BuildContext context,
+    required Widget content,
+    TextColors? titleTextColor,
+    Color? backgroundColor,
+    Color? closeIconColor,
+    Duration duration = const Duration(seconds: 5),
+    SnackBarBehavior? behavior,
+    ShapeBorder? shape,
+    bool showCloseIcon = true,
+  }) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: content,
+        backgroundColor: backgroundColor,
+        duration: duration,
+        behavior: behavior,
+        shape: shape,
+        elevation: 50,
+        showCloseIcon: showCloseIcon,
+        closeIconColor: closeIconColor,
+      ),
+    );
+  }
+
+  void showCustomToast({
+    required BuildContext context,
+    required String message,
+    ToastType type = ToastType.info,
+    Duration duration = const Duration(seconds: 2),
+    double? bottomPadding,
+
+    Color? bgColor,
+    Widget? icon,
+  }) {
+    final overlay = Overlay.of(context);
+
+    final overlayEntry = OverlayEntry(
+      builder:
+          (context) => Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: bottomPadding ?? 100.0),
+              child: Material(
+                elevation: 8,
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  constraints: BoxConstraints(maxWidth: 300),
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                    color: bgColor,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      icon == null
+                          ? SizedBox.shrink()
+                          : Row(children: [icon, SizedBox(width: 8)]),
+                      Flexible(
+                        child: customText(
+                          text: message,
+                          fontSize: TextSize.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+    );
+
+    overlay.insert(overlayEntry);
+    Future.delayed(duration, () => overlayEntry.remove());
   }
 }

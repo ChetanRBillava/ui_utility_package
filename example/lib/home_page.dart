@@ -1,4 +1,5 @@
 import 'package:example/card_page.dart';
+import 'package:example/popup_page.dart';
 import 'package:example/text_fields_page.dart';
 import 'package:example/text_page.dart';
 import 'package:flutter/material.dart';
@@ -133,6 +134,34 @@ class _HomePageState extends State<HomePage> {
                   uiUtilityPackage.customText(
                     text:
                         'Double tap to go to a page where examples related to different form fields like button, radio, checkbox and many more...',
+                    fontSize: TextSize.subTitle,
+                    color: TextColors.secondary,
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          ///Popup widgets
+          GestureDetector(
+            onDoubleTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PopupPage()),
+              );
+            },
+            child: uiUtilityPackage.customCard(
+              color: Color(0xff616060),
+              widget: Column(
+                children: [
+                  uiUtilityPackage.customText(
+                    text: 'Popup Widgets',
+                    fontSize: TextSize.title,
+                    color: TextColors.secondary,
+                  ),
+                  uiUtilityPackage.customText(
+                    text:
+                        'Double tap to go to a page where examples related to different popup widgets like dialog box, snack bar and many more...',
                     fontSize: TextSize.subTitle,
                     color: TextColors.secondary,
                   ),
