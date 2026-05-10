@@ -51,6 +51,7 @@ class UiUtilityPackage {
     required TextSize? fontSize,
     FontWeight? fontWeight,
     TextColors? color,
+    Color? overrideColor,
     FontStyle? fontStyle,
     TextAlign? textAlign,
   }) {
@@ -60,7 +61,7 @@ class UiUtilityPackage {
       fontWeight: fontWeight,
       fontStyle: fontStyle,
       fontSize: fontSizeMap[fontSize],
-      color: textColorsMap[color],
+      color: overrideColor ?? textColorsMap[color],
     );
   }
 
@@ -70,15 +71,23 @@ class UiUtilityPackage {
     Color? shadowColor,
     Color? surfaceTintColor,
     double? elevation,
+    Function()? onTap,
+    Function()? onDoubleTap,
+    Function()? onLongPress,
   }) {
-    return Card(
-      color: color,
-      shadowColor: shadowColor,
-      surfaceTintColor: surfaceTintColor,
-      margin: const EdgeInsets.all(12),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: elevation ?? 4,
-      child: Padding(padding: const EdgeInsets.all(16), child: widget),
+    return GestureDetector(
+      onTap: onTap,
+      onDoubleTap: onDoubleTap,
+      onLongPress: onLongPress,
+      child: Card(
+        color: color,
+        shadowColor: shadowColor,
+        surfaceTintColor: surfaceTintColor,
+        margin: const EdgeInsets.all(12),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: elevation ?? 4,
+        child: Padding(padding: const EdgeInsets.all(16), child: widget),
+      ),
     );
   }
 
@@ -181,15 +190,22 @@ class UiUtilityPackage {
 
   Widget customButton({
     required Function()? onTap,
+     Function()? onDoubleTap,
+     Function()? onLongPress,
     String? buttonText,
     double? width,
     ButtonType type = ButtonType.text,
     IconData? icon,
+    Color? iconColor,
     Color? buttonColor,
     Color? borderColor,
+    TextColors? textColor,
+    Color? overrideTextColor,
   }) {
     return InkWell(
       onTap: onTap,
+      onDoubleTap: onDoubleTap,
+      onLongPress: onLongPress,
       child: Ink(
         decoration: BoxDecoration(
           color: buttonColor,
@@ -200,7 +216,7 @@ class UiUtilityPackage {
         padding: const EdgeInsets.all(8.0),
         child:
             type == ButtonType.icon
-                ? Icon(icon)
+                ? Icon(icon, color: iconColor)
                 : [ButtonType.iconText, ButtonType.textIcon].contains(type)
                 ? Row(
                   mainAxisSize: MainAxisSize.min,
@@ -209,27 +225,29 @@ class UiUtilityPackage {
                     type == ButtonType.iconText
                         ? Padding(
                           padding: const EdgeInsets.only(right: 8.0),
-                          child: Icon(icon),
+                          child: Icon(icon, color: iconColor),
                         )
                         : SizedBox.shrink(),
                     customText(
                       text: buttonText ?? '',
+                      color: textColor,
+                      overrideColor: overrideTextColor,
                       fontSize: TextSize.subTitle,
-                      color: TextColors.primary,
                       textAlign: TextAlign.center,
                     ),
                     type == ButtonType.textIcon
                         ? Padding(
                           padding: const EdgeInsets.only(left: 8.0),
-                          child: Icon(icon),
+                          child: Icon(icon, color: iconColor),
                         )
                         : SizedBox.shrink(),
                   ],
                 )
                 : customText(
                   text: buttonText ?? '',
+                  color: textColor,
+                  overrideColor: overrideTextColor,
                   fontSize: TextSize.subTitle,
-                  color: TextColors.primary,
                   textAlign: TextAlign.center,
                 ),
       ),
@@ -283,12 +301,14 @@ class UiUtilityPackage {
     required String label,
     required bool chipSelected,
     required Function(bool)? onSelected,
+    TextColors? textColor,
+    Color? overrideTextColor,
     Color? selectedColor,
     Color? backgroundColor,
     Color? checkmarkColor,
   }) {
     return ChoiceChip(
-      label: customText(text: label, fontSize: TextSize.subTitle),
+      label: customText(text: label, fontSize: TextSize.subTitle,color: textColor, overrideColor: overrideTextColor),
       selected: chipSelected,
       onSelected: onSelected,
       selectedColor: selectedColor,
@@ -302,13 +322,20 @@ class UiUtilityPackage {
     required List<DropdownMenuItem<dynamic>>? items,
     required Function(dynamic?)? onChanged,
     Color? backgroundColor,
+    Color? iconDisabledColor,
+    Color? iconEnabledColor,
     bool isExpanded = true,
+    Widget? hint,
   }) {
     return Container(
       color: backgroundColor ?? Colors.white,
       child: DropdownButton(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         value: value,
+        dropdownColor: backgroundColor ?? Colors.white,
+        iconDisabledColor: iconDisabledColor,
+        iconEnabledColor: iconEnabledColor,
+        hint: hint,
         isExpanded: isExpanded,
         items: items,
         onChanged: onChanged,
@@ -322,6 +349,7 @@ class UiUtilityPackage {
     required Widget content,
     required List<Widget> actions,
     TextColors? titleTextColor,
+    Color? overrideTitleTextColor,
     Widget? icon,
     Color? iconColor,
     Color? backgroundColor,
@@ -329,10 +357,12 @@ class UiUtilityPackage {
     Color? shadowColor,
     Color? surfaceTintColor,
     bool scrollable = false,
+    bool barrierDismissible = true,
     ShapeBorder? shape,
   }) {
     showDialog(
       context: context,
+        barrierDismissible:barrierDismissible,
       builder: (BuildContext context) {
         return AlertDialog(
           scrollable: scrollable,
@@ -347,6 +377,7 @@ class UiUtilityPackage {
             fontSize: TextSize.title,
             fontWeight: FontWeight.w700,
             color: titleTextColor,
+            overrideColor: overrideTitleTextColor,
           ),
           content: content,
           actions: actions,

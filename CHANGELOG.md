@@ -27,6 +27,12 @@ Here we write the updates of future releases.
 
 
 
+## [1.0.6] - 10-05-2026
+
+### Changed
+- Modifications and optimizations based on user needs
+
+
 ## [1.0.5] - 20-02-2026
 
 ### Added
